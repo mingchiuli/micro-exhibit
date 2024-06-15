@@ -7,9 +7,6 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
       enabled: true
-  datasource:
-    hikari:
-      maximum-pool-size: 10
   profiles:
     default: dev
     active: dev
