@@ -14,8 +14,7 @@ public class UserhttpServiceWrapper {
     private final UserHttpService userHttpService;
 
     public UserEntityDto findById(Long userId) {
-      Result<UserEntityDto> result = userHttpService.findById(userId);
-      return result.getData();
+        Result<UserEntityDto> result = userHttpService.findById(userId);
+        return result.getData();
     }
-
 }
