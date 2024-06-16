@@ -24,7 +24,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -207,7 +206,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<Long> findIds(Pageable pageRequest) {
-        return blogHttpServiceWrapper.findIds(pageRequest);
+    public List<Long> findIds(Integer pageNo, Integer pageSize) {
+        return blogHttpServiceWrapper.findIds(pageNo, pageSize);
     }
 }

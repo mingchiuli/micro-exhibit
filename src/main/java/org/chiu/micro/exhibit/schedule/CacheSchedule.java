@@ -10,7 +10,6 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -91,7 +90,7 @@ public class CacheSchedule {
             int pageSize = 20;
             int totalPage = (int) (total % pageSize == 0 ? total / pageSize : total / pageSize + 1);
             for (int i = 1; i <= totalPage; i++) {
-                var runnable = new BlogRunnable(blogService, blogWrapper, redisTemplate, PageRequest.of(i, pageSize));
+                var runnable = new BlogRunnable(blogService, blogWrapper, redisTemplate, i, pageSize);
                 taskExecutor.execute(runnable);
             }
         }, taskExecutor);

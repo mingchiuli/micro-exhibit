@@ -6,10 +6,8 @@ import java.util.Objects;
 
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.lang.Result;
+import org.chiu.micro.exhibit.page.PageAdapter;
 import org.chiu.micro.exhibit.rpc.BlogHttpService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -55,8 +53,8 @@ public class BlogHttpServiceWrapper {
         return result.getData();
     }
 
-    public List<Long> findIds(Pageable pageRequest) {
-        Result<List<Long>> result = blogHttpService.findIds(pageRequest);
+    public List<Long> findIds(Integer pageNo, Integer pageSize) {
+        Result<List<Long>> result = blogHttpService.findIds(pageNo, pageSize);
         return result.getData();
     }
 
@@ -69,14 +67,13 @@ public class BlogHttpServiceWrapper {
         return result.getCode();
     }
 
-    public Page<BlogEntityDto> findPage(PageRequest pageRequest) {
-        Result<Page<BlogEntityDto>> result = blogHttpService.findPage(pageRequest);
+    public PageAdapter<BlogEntityDto> findPage(Integer pageNo, Integer pageSize) {
+        Result<PageAdapter<BlogEntityDto>> result = blogHttpService.findPage(pageNo, pageSize);
         return result.getData();
     }
 
-    public Page<BlogEntityDto> findPageByCreatedBetween(PageRequest pageRequest, LocalDateTime start,
-            LocalDateTime end) {
-        Result<Page<BlogEntityDto>> result = blogHttpService.findPageByCreatedBetween(pageRequest, start, end);
+    public PageAdapter<BlogEntityDto> findPageByCreatedBetween(Integer pageNo, Integer pageSize, LocalDateTime start, LocalDateTime end) {
+        Result<PageAdapter<BlogEntityDto>> result = blogHttpService.findPageByCreatedBetween(pageNo, pageSize, start, end);
         return result.getData();
     }
 

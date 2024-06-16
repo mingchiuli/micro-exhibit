@@ -2,7 +2,6 @@ package org.chiu.micro.exhibit.schedule.task;
 
 import org.chiu.micro.exhibit.service.BlogService;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.List;
@@ -18,11 +17,11 @@ public record BlogRunnable (
         BlogService blogService,
         BlogWrapper blogWrapper,
         StringRedisTemplate redisTemplate,
-        PageRequest pageRequest) implements Runnable {
+        Integer pageNo, Integer pageSize) implements Runnable {
 
     @Override
     public void run() {
-        List<Long> idList = blogService.findIds(pageRequest);
+        List<Long> idList = blogService.findIds(pageNo, pageSize);
         Optional.ofNullable(idList).ifPresent(ids ->
                 ids.forEach(id -> {
                     redisTemplate.opsForValue().setBit(BLOOM_FILTER_BLOG.getInfo(), id, true);

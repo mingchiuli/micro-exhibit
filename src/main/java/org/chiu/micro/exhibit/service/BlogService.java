@@ -5,7 +5,6 @@ import org.chiu.micro.exhibit.vo.BlogExhibitVo;
 import org.chiu.micro.exhibit.vo.BlogHotReadVo;
 import org.chiu.micro.exhibit.vo.VisitStatisticsVo;
 import org.chiu.micro.exhibit.page.PageAdapter;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -37,6 +36,6 @@ public interface BlogService {
 
     List<Integer> getYears();
 
-    List<Long> findIds(Pageable pageRequest);
+    List<Long> findIds(Integer pageNo, Integer pageSize);
 
 }

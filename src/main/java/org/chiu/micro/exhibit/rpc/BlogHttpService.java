@@ -5,9 +5,8 @@ import java.util.List;
 
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.lang.Result;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.chiu.micro.exhibit.page.PageAdapter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.GetExchange;
@@ -28,7 +27,8 @@ public interface BlogHttpService {
     Result<Long> count();
 
     @PostExchange("/blog/ids")
-    Result<List<Long>> findIds(@RequestBody Pageable pageRequest);
+    Result<List<Long>> findIds(@PathVariable(value = "pageNo") Integer pageNo,
+                               @PathVariable(value = "pageSize") Integer pageSize);
 
     @GetExchange("/blog/{blogId}")
     void setReadCount(@PathVariable Long blogId);
@@ -36,23 +36,25 @@ public interface BlogHttpService {
     @GetExchange("/blog/status/{blogId}")
     Result<Integer> findStatusById(@PathVariable Long blogId);
 
-    @PostExchange("/blog/page")
-    Result<Page<BlogEntityDto>> findPage(@RequestBody PageRequest pageRequest);
+    @PostExchange("/blog/page/{pageNo}/{pageSize}")
+    Result<PageAdapter<BlogEntityDto>> findPage(@PathVariable(value = "pageNo") Integer pageNo,
+                                                @PathVariable(value = "pageSize") Integer pageSize);
 
-    @PostExchange("/blog/page/year/{start}/{end}")
-    Result<Page<BlogEntityDto>> findPageByCreatedBetween(@RequestBody PageRequest pageRequest,
-                                                         @PathVariable(value = "start") LocalDateTime start,
-                                                         @PathVariable(value = "end") LocalDateTime end);
+    @PostExchange("/blog/page/year/{pageNo}/{pageSize}/{start}/{end}")
+    Result<PageAdapter<BlogEntityDto>> findPageByCreatedBetween(@PathVariable(value = "pageNo") Integer pageNo,
+                                                                @PathVariable(value = "pageSize") Integer pageSize,
+                                                                @PathVariable(value = "start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                                                @PathVariable(value = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end);
 
     @GetExchange("/blog/count/{start}/{end}")
-    Result<Long> countByCreatedBetween(@PathVariable(value = "start") LocalDateTime start,
-                                       @PathVariable(value = "end") LocalDateTime end);
+    Result<Long> countByCreatedBetween(@PathVariable(value = "start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                       @PathVariable(value = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end);
 
     @GetExchange("/blog/page/count/year/{created}/{start}/{end}")
-    Result<Long> getPageCountYear(@PathVariable(value = "created") LocalDateTime created,
-                                  @PathVariable(value = "start") LocalDateTime start,
-                                  @PathVariable(value = "end") LocalDateTime end);
+    Result<Long> getPageCountYear(@PathVariable(value = "created") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime created,
+                                  @PathVariable(value = "start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+                                  @PathVariable(value = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end);
 
     @GetExchange("/blog/count/until/{created}")
-    Result<Long> countByCreatedGreaterThanEqual(LocalDateTime created);
+    Result<Long> countByCreatedGreaterThanEqual(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime created);
 }

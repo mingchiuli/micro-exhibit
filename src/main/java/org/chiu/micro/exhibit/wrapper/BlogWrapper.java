@@ -14,9 +14,6 @@ import org.chiu.micro.exhibit.page.PageAdapter;
 import org.chiu.micro.exhibit.rpc.wrapper.BlogHttpServiceWrapper;
 import org.chiu.micro.exhibit.rpc.wrapper.UserhttpServiceWrapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -62,14 +59,11 @@ public class BlogWrapper {
 
     @Cache(prefix = Const.HOT_BLOGS)
     public PageAdapter<BlogDescriptionDto> findPage(Integer currentPage, Integer year) {
-        var pageRequest = PageRequest.of(currentPage - 1,
-                blogPageSize,
-                Sort.by("created").descending());
-
-        Page<BlogEntityDto> page = Objects.equals(year, Integer.MIN_VALUE) ?
-                blogHttpServiceWrapper.findPage(pageRequest) :
-                blogHttpServiceWrapper.findPageByCreatedBetween(pageRequest, LocalDateTime.of(year, 1, 1, 0, 0, 0),
-                LocalDateTime.of(year, 12, 31, 23, 59, 59));
+        PageAdapter<BlogEntityDto> page = Objects.equals(year, Integer.MIN_VALUE) ?
+                blogHttpServiceWrapper.findPage(currentPage, blogPageSize) :
+                blogHttpServiceWrapper.findPageByCreatedBetween(currentPage, blogPageSize,
+                        LocalDateTime.of(year, 1, 1, 0, 0, 0),
+                        LocalDateTime.of(year, 12, 31, 23, 59, 59));
 
         return BlogDescriptionDtoConvertor.convert(page);
     }
