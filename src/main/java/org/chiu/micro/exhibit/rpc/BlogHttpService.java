@@ -44,7 +44,7 @@ public interface BlogHttpService {
                                                          @PathVariable(value = "start") LocalDateTime start,
                                                          @PathVariable(value = "end") LocalDateTime end);
 
-    @PostExchange("/blog/count/{start}/{end}")
+    @GetExchange("/blog/count/{start}/{end}")
     Result<Long> countByCreatedBetween(@PathVariable(value = "start") LocalDateTime start,
                                        @PathVariable(value = "end") LocalDateTime end);
 
