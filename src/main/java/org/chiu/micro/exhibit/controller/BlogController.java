@@ -29,7 +29,7 @@ public class BlogController {
 
     private final BlogService blogService;
 
-    @GetMapping("/info/{blogId}/")
+    @GetMapping("/info/{blogId}/{userId}")
     @Bloom(handler = DetailHandler.class)
     public Result<BlogExhibitVo> getBlogDetail(@PathVariable(name = "blogId") Long blogId,
                                                @RequestBody List<String> roles,
