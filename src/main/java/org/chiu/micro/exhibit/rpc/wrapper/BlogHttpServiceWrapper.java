@@ -1,6 +1,6 @@
 package org.chiu.micro.exhibit.rpc.wrapper;
 
-import static org.chiu.micro.exhibit.lang.ExceptionMessage.*;
+import static org.chiu.micro.exhibit.lang.ExceptionMessage.NO_FOUND;
 
 import java.time.LocalDateTime;
 import java.util.List;
