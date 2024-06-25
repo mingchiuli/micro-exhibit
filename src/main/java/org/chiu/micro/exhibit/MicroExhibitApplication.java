@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class MicroExhibitApplication {
 
 	public static void main(String[] args) {
-				SpringApplication.run(MicroExhibitApplication.class, args);
-		}
+			SpringApplication.run(MicroExhibitApplication.class, args);
+	}
 
 }

@@ -22,9 +22,9 @@ public class BlogRedisCacheEvictMessageListener {
     private final List<BlogCacheEvictHandler> blogCacheEvictHandlers;
 
     @RabbitListener(queues = EvictCacheRabbitConfig.CACHE_BLOG_EVICT_QUEUE,
-            concurrency = "10",
-            messageConverter = "jsonMessageConverter",
-            executor = "mqExecutor")
+                    concurrency = "10",
+                    messageConverter = "jsonMessageConverter",
+                    executor = "mqExecutor")
     public void handler(BlogOperateMessage message, Channel channel, Message msg) {
         for (BlogCacheEvictHandler handler : blogCacheEvictHandlers) {
             if (handler.supports(message.getTypeEnum())) {
