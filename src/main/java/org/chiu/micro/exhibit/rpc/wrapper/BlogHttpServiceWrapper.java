@@ -89,7 +89,7 @@ public class BlogHttpServiceWrapper {
         if (result.getCode() != 200) {
             throw new MissException(NO_FOUND.getMsg());
         }
-        return result.getCode();
+        return result.getData();
     }
 
     public PageAdapter<BlogEntityDto> findPage(Integer pageNo, Integer pageSize) {

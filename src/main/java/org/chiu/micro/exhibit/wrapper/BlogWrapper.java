@@ -53,7 +53,6 @@ public class BlogWrapper {
     @Cache(prefix = Const.BLOG_STATUS)
     public Integer findStatusById(Long blogId) {
         Integer status = blogHttpServiceWrapper.findStatusById(blogId);
-        log.info("!!!{}", status);
         if (Objects.isNull(status)) {
             status = StatusEnum.NORMAL.getCode();
         }
