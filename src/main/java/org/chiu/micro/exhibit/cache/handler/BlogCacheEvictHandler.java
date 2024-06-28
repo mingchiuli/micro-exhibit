@@ -12,6 +12,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
@@ -45,8 +46,12 @@ public abstract sealed class BlogCacheEvictHandler permits
         try {
             Long blogId = message.getBlogId();
             Integer year = message.getYear();
-            BlogEntityDto blogEntity = blogHttpServiceWrapper.findById(blogId, year);
-
+            BlogEntityDto blogEntity;
+            if (Objects.equals(message.getTypeEnum(), BlogOperateEnum.REMOVE)) {
+                blogEntity = BlogEntityDto.builder().id(blogId).build();
+            } else {
+                blogEntity = blogHttpServiceWrapper.findById(blogId, year);
+            }
             Set<String> keys = redisProcess(blogEntity);
             rabbitTemplate.convertAndSend(CacheBlogEvictRabbitConfig.CACHE_BLOG_EVICT_FANOUT_EXCHANGE, "", keys);
 
