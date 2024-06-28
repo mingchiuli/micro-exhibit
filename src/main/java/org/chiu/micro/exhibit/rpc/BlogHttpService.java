@@ -30,7 +30,7 @@ public interface BlogHttpService {
     Result<List<Long>> findIds(@PathVariable(value = "pageNo") Integer pageNo,
                                @PathVariable(value = "pageSize") Integer pageSize);
 
-    @GetExchange("/blog/{blogId}")
+    @PostExchange("/blog/{blogId}")
     void setReadCount(@PathVariable Long blogId);
 
     @GetExchange("/blog/status/{blogId}")
