@@ -12,6 +12,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -48,7 +49,10 @@ public abstract sealed class BlogCacheEvictHandler permits
             Integer year = message.getYear();
             BlogEntityDto blogEntity;
             if (Objects.equals(message.getTypeEnum(), BlogOperateEnum.REMOVE)) {
-                blogEntity = BlogEntityDto.builder().id(blogId).build();
+                blogEntity = BlogEntityDto.builder()
+                        .id(blogId)
+                        .created(LocalDateTime.of(year, 1, 1, 0, 0, 0))
+                        .build();
             } else {
                 blogEntity = blogHttpServiceWrapper.findById(blogId, year);
             }
