@@ -1,6 +1,5 @@
 package org.chiu.micro.exhibit.rpc.wrapper;
 
-import static org.chiu.micro.exhibit.lang.ExceptionMessage.NO_FOUND;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +26,7 @@ public class BlogHttpServiceWrapper {
     public BlogEntityDto findById(Long blogId, Integer year) {
         Result<BlogEntityDto> result = blogHttpService.findById(blogId);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
 
         BlogEntityDto data = result.getData();
@@ -43,7 +42,7 @@ public class BlogHttpServiceWrapper {
     public BlogEntityDto findById(Long blogId) {
         Result<BlogEntityDto> result = blogHttpService.findById(blogId);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -51,7 +50,7 @@ public class BlogHttpServiceWrapper {
     public List<BlogEntityDto> findAllById(List<Long> ids) {
         Result<List<BlogEntityDto>> result = blogHttpService.findAllById(ids);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -59,7 +58,7 @@ public class BlogHttpServiceWrapper {
     public List<Integer> getYears() {
         Result<List<Integer>> result = blogHttpService.getYears();
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -67,7 +66,7 @@ public class BlogHttpServiceWrapper {
     public Long count() {
         Result<Long> result = blogHttpService.count();
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -75,7 +74,7 @@ public class BlogHttpServiceWrapper {
     public List<Long> findIds(Integer pageNo, Integer pageSize) {
         Result<List<Long>> result = blogHttpService.findIds(pageNo, pageSize);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -87,7 +86,7 @@ public class BlogHttpServiceWrapper {
     public Integer findStatusById(Long blogId) {
         Result<Integer> result = blogHttpService.findStatusById(blogId);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -95,7 +94,7 @@ public class BlogHttpServiceWrapper {
     public PageAdapter<BlogEntityDto> findPage(Integer pageNo, Integer pageSize) {
         Result<PageAdapter<BlogEntityDto>> result = blogHttpService.findPage(pageNo, pageSize);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -103,7 +102,7 @@ public class BlogHttpServiceWrapper {
     public PageAdapter<BlogEntityDto> findPageByCreatedBetween(Integer pageNo, Integer pageSize, LocalDateTime start, LocalDateTime end) {
         Result<PageAdapter<BlogEntityDto>> result = blogHttpService.findPageByCreatedBetween(pageNo, pageSize, start, end);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -111,7 +110,7 @@ public class BlogHttpServiceWrapper {
     public Long countByCreatedBetween(LocalDateTime start, LocalDateTime end) {
         Result<Long> result = blogHttpService.countByCreatedBetween(start, end);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -119,7 +118,7 @@ public class BlogHttpServiceWrapper {
     public long countByCreatedGreaterThanEqual(LocalDateTime created) {
         Result<Long> result = blogHttpService.countByCreatedGreaterThanEqual(created);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
@@ -127,7 +126,7 @@ public class BlogHttpServiceWrapper {
     public long getPageCountYear(LocalDateTime created, LocalDateTime start, LocalDateTime end) {
         Result<Long> result = blogHttpService.getPageCountYear(created, start, end);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
