@@ -45,7 +45,7 @@ public class CacheAspect {
 
     private final com.github.benmanes.caffeine.cache.Cache<String, Object> localCache;
 
-    @Pointcut("@annotation(org.chiu.megalith.infra.cache.Cache)")
+    @Pointcut("@annotation(org.chiu.micro.exhibit.cache.config.Cache)")
     public void pt() {
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import static org.chiu.micro.exhibit.lang.ExceptionMessage.NO_FOUND;;
+import static org.chiu.micro.exhibit.lang.ExceptionMessage.NO_FOUND;
 
 
 @Component

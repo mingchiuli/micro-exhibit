@@ -1,7 +1,6 @@
 package org.chiu.micro.exhibit.wrapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.chiu.micro.exhibit.convertor.BlogDescriptionDtoConvertor;
 import org.chiu.micro.exhibit.convertor.BlogExhibitDtoConvertor;
 import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
@@ -24,7 +23,6 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class BlogWrapper {
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
