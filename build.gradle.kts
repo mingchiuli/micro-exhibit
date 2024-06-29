@@ -46,7 +46,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 	environment = mapOf("BP_NATIVE_IMAGE_BUILD_ARGUMENTS" to
 			"""
 				-march=compatibility
-				--gc=G1
+				--gc=serial
 				-R:MaxHeapSize=256m
 				-O2
 			""")
