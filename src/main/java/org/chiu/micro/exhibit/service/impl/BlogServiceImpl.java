@@ -118,6 +118,7 @@ public class BlogServiceImpl implements BlogService {
         if (valid) {
             blogWrapper.setReadCount(blogId);
             BlogExhibitDto blogExhibitDto = blogWrapper.findById(blogId);
+            redisTemplate.delete(READ_TOKEN.getInfo() + blogId);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
         throw new MissException(TOKEN_INVALID.getMsg());
