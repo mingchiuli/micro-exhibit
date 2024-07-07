@@ -75,12 +75,6 @@ public class CacheAspect {
             return cacheValue;
         }
 
-        Object localCacheObj = localCache.getIfPresent(cacheKey);
-
-        if (Objects.nonNull(localCacheObj)) {
-            return localCacheObj;
-        }
-
         String remoteCacheStr;
         // 防止redis挂了以后db也访问不了
         try {
