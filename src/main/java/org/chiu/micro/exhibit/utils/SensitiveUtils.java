@@ -24,7 +24,7 @@ public class SensitiveUtils {
         var sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < item.length(); i++) {
-          sb.append("*");
+          sb.append("+");
         }
         sb.append("]");
         return sb.toString();
