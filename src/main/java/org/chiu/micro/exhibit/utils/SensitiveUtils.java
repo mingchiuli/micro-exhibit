@@ -22,9 +22,11 @@ public class SensitiveUtils {
 
     private static String getStar(String item) {
         var sb = new StringBuilder();
+        sb.append("[");
         for (int i = 0; i < item.length(); i++) {
           sb.append("*");
         }
+        sb.append("]");
         return sb.toString();
     }
 }
