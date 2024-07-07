@@ -7,13 +7,16 @@ import org.chiu.micro.exhibit.convertor.VisitStatisticsVoConvertor;
 import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.dto.BlogExhibitDto;
+import org.chiu.micro.exhibit.dto.BlogSensitiveContentDto;
 import org.chiu.micro.exhibit.vo.BlogDescriptionVo;
 import org.chiu.micro.exhibit.vo.BlogExhibitVo;
 import org.chiu.micro.exhibit.vo.BlogHotReadVo;
 import org.chiu.micro.exhibit.vo.VisitStatisticsVo;
+import org.chiu.micro.exhibit.wrapper.BlogSensitiveWrapper;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
 import org.chiu.micro.exhibit.lang.StatusEnum;
 import org.chiu.micro.exhibit.service.BlogService;
+import org.chiu.micro.exhibit.utils.SensitiveUtils;
 import org.chiu.micro.exhibit.exception.MissException;
 import org.chiu.micro.exhibit.page.PageAdapter;
 import org.chiu.micro.exhibit.rpc.wrapper.BlogHttpServiceWrapper;
@@ -47,6 +50,8 @@ import static org.chiu.micro.exhibit.lang.ExceptionMessage.*;
 @Service
 @RequiredArgsConstructor
 public class BlogServiceImpl implements BlogService {
+
+    private final BlogSensitiveWrapper blogSensitiveWrapper;
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
@@ -92,7 +97,7 @@ public class BlogServiceImpl implements BlogService {
     public Integer getBlogStatus(List<String> roles, Long blogId, Long userId) {
         Integer status = blogWrapper.findStatusById(blogId);
 
-        if (StatusEnum.NORMAL.getCode().equals(status)) {
+        if (StatusEnum.NORMAL.getCode().equals(status) || StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
             return status;
         }
 
@@ -178,13 +183,19 @@ public class BlogServiceImpl implements BlogService {
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
 
-        if (roles.isEmpty()) {
-            throw new MissException(AUTH_EXCEPTION.getMsg());
-        }
-
-        if (userId.equals(blogExhibitDto.getUserId())) {
+        if (Objects.equals(userId, blogExhibitDto.getUserId())) {
             blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
+        }
+
+        if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
+            BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(id);
+            String sensitiveContentList = sensitiveContentDto.getSensitiveContentList();
+            if (StringUtils.hasLength(sensitiveContentList)) {
+                String[] words = sensitiveContentList.split(",");
+                String content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
+                blogExhibitDto.setContent(content);
+            }
         }
 
         throw new MissException(AUTH_EXCEPTION.getMsg());

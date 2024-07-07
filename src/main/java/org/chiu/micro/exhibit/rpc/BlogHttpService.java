@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
+import org.chiu.micro.exhibit.dto.BlogSensitiveContentDto;
 import org.chiu.micro.exhibit.lang.Result;
 import org.chiu.micro.exhibit.page.PageAdapter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,4 +58,7 @@ public interface BlogHttpService {
 
     @GetExchange("/blog/count/until/{created}")
     Result<Long> countByCreatedGreaterThanEqual(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime created);
+
+    @GetExchange("/blog/sensitive/{blogId}")
+    Result<BlogSensitiveContentDto> findSensitiveByBlogId(@PathVariable Long blogId);
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
+import org.chiu.micro.exhibit.dto.BlogSensitiveContentDto;
 import org.chiu.micro.exhibit.exception.MissException;
 import org.chiu.micro.exhibit.lang.Result;
 import org.chiu.micro.exhibit.page.PageAdapter;
@@ -125,6 +126,14 @@ public class BlogHttpServiceWrapper {
 
     public long getPageCountYear(LocalDateTime created, LocalDateTime start, LocalDateTime end) {
         Result<Long> result = blogHttpService.getPageCountYear(created, start, end);
+        if (result.getCode() != 200) {
+            throw new MissException(result.getMsg());
+        }
+        return result.getData();
+    }
+
+    public BlogSensitiveContentDto findSensitiveByBlogId(Long blogId) {
+        Result<BlogSensitiveContentDto> result = blogHttpService.findSensitiveByBlogId(blogId);
         if (result.getCode() != 200) {
             throw new MissException(result.getMsg());
         }

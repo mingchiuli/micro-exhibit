@@ -2,6 +2,7 @@ package org.chiu.micro.exhibit.cache.handler;
 
 import lombok.SneakyThrows;
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
+import org.chiu.micro.exhibit.wrapper.BlogSensitiveWrapper;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
 import org.chiu.micro.exhibit.cache.config.CacheKeyGenerator;
 import org.chiu.micro.exhibit.constant.BlogOperateEnum;
@@ -54,6 +55,8 @@ public final class DeleteBlogCacheEvictHandler extends BlogCacheEvictHandler {
         String getCountByYear = cacheKeyGenerator.generateKey(getCountByYearMethod, year);
         Method statusMethod = BlogWrapper.class.getMethod("findStatusById", Long.class);
         String status = cacheKeyGenerator.generateKey(statusMethod, id);
+        Method sensitiveMethod = BlogSensitiveWrapper.class.getMethod("findSensitiveByBlogId", Long.class);
+        String sensitive = cacheKeyGenerator.generateKey(sensitiveMethod, id);
         //删掉所有摘要缓存
         var start = LocalDateTime.of(year, 1, 1, 0, 0, 0);
         var end = LocalDateTime.of(year, 12, 31, 23, 59, 59);
@@ -65,6 +68,7 @@ public final class DeleteBlogCacheEvictHandler extends BlogCacheEvictHandler {
         keys.add(findById);
         keys.add(getCountByYear);
         keys.add(status);
+        keys.add(sensitive);
 
         String blogEditKey = KeyFactory.createBlogEditRedisKey(blogEntity.getUserId(), id);
         //删除该年份的页面bloom，listPage的bloom，getCountByYear的bloom，后面逻辑重建

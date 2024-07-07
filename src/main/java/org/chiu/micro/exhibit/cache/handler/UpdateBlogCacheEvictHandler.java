@@ -1,6 +1,8 @@
 package org.chiu.micro.exhibit.cache.handler;
 
 import lombok.SneakyThrows;
+
+import org.chiu.micro.exhibit.wrapper.BlogSensitiveWrapper;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.cache.config.CacheKeyGenerator;
@@ -58,9 +60,13 @@ public final class UpdateBlogCacheEvictHandler extends BlogCacheEvictHandler {
         String findByIdAndVisible = cacheKeyGenerator.generateKey(findByIdAndVisibleMethod, id);
         Method statusMethod = BlogWrapper.class.getMethod("findStatusById", Long.class);
         String statusKey = cacheKeyGenerator.generateKey(statusMethod, id);
+        Method sensitiveMethod = BlogSensitiveWrapper.class.getMethod("findSensitiveByBlogId", Long.class);
+        String sensitive = cacheKeyGenerator.generateKey(sensitiveMethod, id);
 
         keys.add(findByIdAndVisible);
         keys.add(statusKey);
+        keys.add(sensitive);
+
         if (NORMAL.getCode().equals(status)) {
             keys.add(READ_TOKEN.getInfo() + id);
         }

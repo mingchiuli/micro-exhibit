@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.chiu.micro.exhibit.cache.mq.CacheBlogEvictMessageListener;
 import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
 import org.chiu.micro.exhibit.dto.BlogExhibitDto;
+import org.chiu.micro.exhibit.dto.BlogSensitiveContentDto;
 import org.springframework.aot.hint.*;
 
 import java.util.LinkedHashSet;
@@ -23,6 +24,7 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
     
         hints.serialization().registerType(BlogExhibitDto.class);
         hints.serialization().registerType(BlogDescriptionDto.class);
+        hints.serialization().registerType(BlogSensitiveContentDto.class);
 
         hints.reflection().registerType(
                 TypeReference.of("com.github.benmanes.caffeine.cache.SSMSA"),
