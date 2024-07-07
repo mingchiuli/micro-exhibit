@@ -181,6 +181,7 @@ public class BlogServiceImpl implements BlogService {
         Integer status = blogWrapper.findStatusById(id);
 
         log.info("param:{},{},{},{},{}", status, roles, highestRole, roles.contains(highestRole),userId);
+        log.info("content:{}", blogExhibitDto.toString());
         if (StatusEnum.NORMAL.getCode().equals(status) || roles.contains(highestRole)) {
             log.info("entry 1");
             blogWrapper.setReadCount(id);
