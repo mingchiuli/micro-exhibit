@@ -195,8 +195,8 @@ public class BlogServiceImpl implements BlogService {
                 String[] words = sensitiveContentList.split(",");
                 String content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
                 blogExhibitDto.setContent(content);
-                return BlogExhibitVoConvertor.convert(blogExhibitDto);
             }
+            return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
 
         throw new MissException(AUTH_EXCEPTION.getMsg());
