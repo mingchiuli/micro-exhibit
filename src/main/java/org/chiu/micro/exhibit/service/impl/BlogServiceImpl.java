@@ -23,6 +23,7 @@ import org.chiu.micro.exhibit.rpc.wrapper.BlogHttpServiceWrapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -49,6 +50,7 @@ import static org.chiu.micro.exhibit.lang.ExceptionMessage.*;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BlogServiceImpl implements BlogService {
 
     private final BlogSensitiveWrapper blogSensitiveWrapper;
@@ -178,6 +180,8 @@ public class BlogServiceImpl implements BlogService {
         BlogExhibitDto blogExhibitDto = blogWrapper.findById(id);
         Integer status = blogWrapper.findStatusById(id);
 
+        log.info("sss:{},{},{},{},{}, ", roles, userId, status, highestRole, blogExhibitDto.getUserId());
+
         if (StatusEnum.NORMAL.getCode().equals(status) || roles.contains(highestRole)) {
             blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
@@ -196,6 +200,7 @@ public class BlogServiceImpl implements BlogService {
                 String content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
                 blogExhibitDto.setContent(content);
             }
+            blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
 
