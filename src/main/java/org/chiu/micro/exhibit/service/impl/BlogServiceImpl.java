@@ -23,6 +23,7 @@ import org.chiu.micro.exhibit.rpc.wrapper.BlogHttpServiceWrapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -49,6 +50,7 @@ import static org.chiu.micro.exhibit.lang.ExceptionMessage.*;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BlogServiceImpl implements BlogService {
 
     private final BlogSensitiveWrapper blogSensitiveWrapper;
@@ -178,17 +180,21 @@ public class BlogServiceImpl implements BlogService {
         BlogExhibitDto blogExhibitDto = blogWrapper.findById(id);
         Integer status = blogWrapper.findStatusById(id);
 
+        log.info("param:{},{},{},{},{}", status, roles, highestRole, roles.contains(highestRole),userId);
         if (StatusEnum.NORMAL.getCode().equals(status) || roles.contains(highestRole)) {
+            log.info("entry 1");
             blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
 
         if (Objects.equals(userId, blogExhibitDto.getUserId())) {
+            log.info("entry 2");
             blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto);
         }
 
         if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
+            log.info("entry 3");
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(id);
             String sensitiveContentList = sensitiveContentDto.getSensitiveContentList();
             if (StringUtils.hasLength(sensitiveContentList)) {
