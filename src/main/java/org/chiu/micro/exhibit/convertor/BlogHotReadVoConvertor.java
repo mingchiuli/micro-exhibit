@@ -12,6 +12,7 @@ import java.util.Set;
 
 import static org.chiu.micro.exhibit.lang.ExceptionMessage.NO_FOUND;
 import static org.chiu.micro.exhibit.lang.StatusEnum.NORMAL;
+import static org.chiu.micro.exhibit.lang.StatusEnum.SENSITIVE_FILTER;
 
 public class BlogHotReadVoConvertor {
 
@@ -20,7 +21,7 @@ public class BlogHotReadVoConvertor {
     public static List<BlogHotReadVo> convert(List<BlogEntityDto> blogs, Set<ZSetOperations.TypedTuple<String>> set) {
 
         List<Long> ids = blogs.stream()
-                .filter(item -> NORMAL.getCode().equals(item.getStatus()))
+                .filter(item -> NORMAL.getCode().equals(item.getStatus()) || SENSITIVE_FILTER.getCode().equals(item.getStatus()))
                 .map(BlogEntityDto::getId)
                 .toList();
 
