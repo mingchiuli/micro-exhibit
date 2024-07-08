@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
+
 
 @Component
 @RequiredArgsConstructor
@@ -51,9 +53,7 @@ public class BlogWrapper {
     @Cache(prefix = Const.BLOG_STATUS)
     public Integer findStatusById(Long blogId) {
         Integer status = blogHttpServiceWrapper.findStatusById(blogId);
-        if (Objects.isNull(status)) {
-            status = StatusEnum.NORMAL.getCode();
-        }
+        status = Optional.ofNullable(status).orElse(StatusEnum.NORMAL.getCode());
         return status;
     }
 

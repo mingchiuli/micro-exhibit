@@ -26,10 +26,10 @@ public class BlogHotReadVoConvertor {
                 .toList();
 
         List<BlogHotReadVo> items = Optional.ofNullable(set).orElseGet(LinkedHashSet::new).stream()
-                .filter(item -> ids.contains(Long.valueOf(item.getValue())))
+                .filter(item -> ids.contains(Long.valueOf(Optional.ofNullable(item.getValue()).orElse("0"))))
                 .map(item -> BlogHotReadVo.builder()
-                        .id(Long.valueOf(item.getValue()))
-                        .readCount(item.getScore().longValue())
+                        .id(Long.valueOf(Optional.ofNullable(item.getValue()).orElse("0")))
+                        .readCount(Optional.ofNullable(item.getScore()).orElse(0d).longValue())
                         .build())
                 .toList();
 
