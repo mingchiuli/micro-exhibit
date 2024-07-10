@@ -1,18 +1,16 @@
 package org.chiu.micro.exhibit.utils;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SensitiveUtils {
   
     private SensitiveUtils() {}
 
-    public static String deal(String[] sensitiveWords, String rawContent) {
-        List<String> words = Arrays.stream(sensitiveWords)
+    public static String deal(List<String> sensitiveWords, String rawContent) {
+        List<String> words = sensitiveWords.stream()
                 .sorted(Comparator.comparingInt(String::length).reversed())
-                .collect(Collectors.toList());
+                .toList();
 
         for (String str : words) {
             rawContent = rawContent.replaceAll(str, getStar(str));
@@ -21,12 +19,8 @@ public class SensitiveUtils {
     }
 
     private static String getStar(String item) {
-        var sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < item.length(); i++) {
-          sb.append("+");
-        }
-        sb.append("]");
-        return sb.toString();
+        return "[" +
+                "+".repeat(item.length()) +
+                "]";
     }
 }

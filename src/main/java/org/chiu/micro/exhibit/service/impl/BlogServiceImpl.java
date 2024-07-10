@@ -190,11 +190,10 @@ public class BlogServiceImpl implements BlogService {
 
         if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(id);
-            String sensitiveContentList = sensitiveContentDto.getSensitiveContentList();
+            List<String> words = sensitiveContentDto.getSensitiveContent();
             String content = blogExhibitDto.getContent();
-            if (StringUtils.hasLength(sensitiveContentList)) {
-                String[] words = sensitiveContentList.split(",");
-                content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
+            if (!words.isEmpty()) {
+                content = SensitiveUtils.deal(words, content);
             }
             blogWrapper.setReadCount(id);
             return BlogExhibitVoConvertor.convert(blogExhibitDto, content);
