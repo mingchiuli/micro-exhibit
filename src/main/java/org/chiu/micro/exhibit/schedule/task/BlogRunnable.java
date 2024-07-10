@@ -1,6 +1,8 @@
 package org.chiu.micro.exhibit.schedule.task;
 
+import org.chiu.micro.exhibit.lang.StatusEnum;
 import org.chiu.micro.exhibit.service.BlogService;
+import org.chiu.micro.exhibit.wrapper.BlogSensitiveWrapper;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -16,6 +18,7 @@ import static org.chiu.micro.exhibit.lang.Const.BLOOM_FILTER_BLOG;
 public record BlogRunnable (
         BlogService blogService,
         BlogWrapper blogWrapper,
+        BlogSensitiveWrapper blogSensitiveWrapper,
         StringRedisTemplate redisTemplate,
         Integer pageNo, Integer pageSize) implements Runnable {
 
@@ -25,8 +28,11 @@ public record BlogRunnable (
         Optional.ofNullable(idList).ifPresent(ids ->
                 ids.forEach(id -> {
                     redisTemplate.opsForValue().setBit(BLOOM_FILTER_BLOG.getInfo(), id, true);
-                    blogWrapper.findStatusById(id);
+                    Integer status = blogWrapper.findStatusById(id);
                     blogWrapper.findById(id);
+                    if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
+                        blogSensitiveWrapper.findSensitiveByBlogId(id);
+                    }
                 })
         );
     }

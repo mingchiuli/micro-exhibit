@@ -1,6 +1,7 @@
 package org.chiu.micro.exhibit.schedule;
 
 import org.chiu.micro.exhibit.service.BlogService;
+import org.chiu.micro.exhibit.wrapper.BlogSensitiveWrapper;
 import org.chiu.micro.exhibit.wrapper.BlogWrapper;
 import org.chiu.micro.exhibit.schedule.task.BlogRunnable;
 import org.chiu.micro.exhibit.schedule.task.BlogsRunnable;
@@ -38,6 +39,8 @@ public class CacheSchedule {
     private final StringRedisTemplate redisTemplate;
 
     private final RedissonClient redisson;
+
+    private final BlogSensitiveWrapper blogSensitiveWrapper;
 
     @Value("${blog.blog-page-size}")
     private int blogPageSize;
@@ -90,7 +93,7 @@ public class CacheSchedule {
             int pageSize = 20;
             int totalPage = (int) (total % pageSize == 0 ? total / pageSize : total / pageSize + 1);
             for (int i = 1; i <= totalPage; i++) {
-                var runnable = new BlogRunnable(blogService, blogWrapper, redisTemplate, i, pageSize);
+                var runnable = new BlogRunnable(blogService, blogWrapper, blogSensitiveWrapper, redisTemplate, i, pageSize);
                 taskExecutor.execute(runnable);
             }
         }, taskExecutor);
