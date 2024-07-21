@@ -83,6 +83,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public PageAdapter<BlogDescriptionVo> findPage(Integer currentPage, Integer year) {
         PageAdapter<BlogDescriptionDto> dtoPageAdapter = blogWrapper.findPage(currentPage, year);
+        log.info("0 -- {}", dtoPageAdapter.toString());
         List<BlogDescriptionDto> descList = dtoPageAdapter.getContent();
         List<BlogDescriptionDto> descSensitiveList = new ArrayList<>();
 
