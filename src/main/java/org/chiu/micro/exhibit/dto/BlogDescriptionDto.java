@@ -25,6 +25,8 @@ public class BlogDescriptionDto implements Serializable {
 
     private String description;
 
+    private Integer status;
+
     private LocalDateTime created;
 
     private String link;

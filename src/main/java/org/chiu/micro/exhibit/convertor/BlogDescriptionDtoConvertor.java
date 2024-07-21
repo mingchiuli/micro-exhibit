@@ -33,6 +33,7 @@ public class BlogDescriptionDtoConvertor {
                 .id(item.getId())
                 .description(item.getDescription())
                 .title(item.getTitle())
+                .status(item.getStatus())
                 .created(item.getCreated())
                 .link(item.getLink())
                 .build()));
@@ -47,6 +48,16 @@ public class BlogDescriptionDtoConvertor {
                 .last(page.isLast())
                 .empty(page.isEmpty())
                 .totalPages(page.getTotalPages())
+                .build();
+    }
+
+    public static BlogDescriptionDto convert(BlogDescriptionDto content, String title, String description) {
+        return BlogDescriptionDto.builder()
+                .id(content.getId())
+                .status(content.getStatus())
+                .created(content.getCreated())
+                .title(title)
+                .description(description)
                 .build();
     }
 
