@@ -6,7 +6,6 @@ import java.util.List;
 import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.page.PageAdapter;
-import org.springframework.data.domain.Page;
 
 /**
  * @Author limingjiu
@@ -15,16 +14,6 @@ import org.springframework.data.domain.Page;
 public class BlogDescriptionDtoConvertor {
 
     private BlogDescriptionDtoConvertor() {}
-
-    public static PageAdapter<BlogDescriptionDto> convert(Page<BlogEntityDto> page) {
-        return new PageAdapter<>(page.map(blogEntity -> BlogDescriptionDto.builder()
-                .id(blogEntity.getId())
-                .description(blogEntity.getDescription())
-                .title(blogEntity.getTitle())
-                .created(blogEntity.getCreated())
-                .link(blogEntity.getLink())
-                .build()));
-    }
 
     public static PageAdapter<BlogDescriptionDto> convert(PageAdapter<BlogEntityDto> page) {
         List<BlogEntityDto> content = page.getContent();
