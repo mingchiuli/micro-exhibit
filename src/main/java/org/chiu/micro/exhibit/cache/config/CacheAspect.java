@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -35,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Order(2)
 @RequiredArgsConstructor
-@Slf4j
 public class CacheAspect {
 
     private final StringRedisTemplate redisTemplate;
@@ -75,7 +73,6 @@ public class CacheAspect {
 
         Object cacheValue = localCache.getIfPresent(cacheKey);
         if (Objects.nonNull(cacheValue)) {
-            log.info("cache -- 1:{}", cacheValue.toString());
             return cacheValue;
         }
 
@@ -90,7 +87,6 @@ public class CacheAspect {
         if (StringUtils.hasLength(remoteCacheStr)) {
             Object remoteCacheObj = objectMapper.readValue(remoteCacheStr, javaType);
             localCache.put(cacheKey, remoteCacheObj);
-            log.info("cache -- 2:{}", remoteCacheObj.toString());
             return remoteCacheObj;
         }
 
@@ -107,7 +103,6 @@ public class CacheAspect {
             String r = redisTemplate.opsForValue().get(cacheKey);
 
             if (StringUtils.hasLength(r)) {
-                log.info("cache -- 3:{}", r.toString());
                 return objectMapper.readValue(r, javaType);
             }
             // 执行目标方法
@@ -115,7 +110,6 @@ public class CacheAspect {
 
             Cache annotation = method.getAnnotation(Cache.class);
             redisTemplate.opsForValue().set(cacheKey, objectMapper.writeValueAsString(proceed), annotation.expire(), TimeUnit.MINUTES);
-            log.info("cache -- 4:{}", objectMapper.writeValueAsString(proceed));
             localCache.put(cacheKey, proceed);
             return proceed;
         } finally {

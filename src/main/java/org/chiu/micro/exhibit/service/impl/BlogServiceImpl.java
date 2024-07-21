@@ -24,7 +24,6 @@ import org.chiu.micro.exhibit.rpc.wrapper.BlogHttpServiceWrapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -51,7 +50,6 @@ import static org.chiu.micro.exhibit.lang.ExceptionMessage.*;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class BlogServiceImpl implements BlogService {
 
     private final BlogSensitiveWrapper blogSensitiveWrapper;
@@ -83,7 +81,6 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public PageAdapter<BlogDescriptionVo> findPage(Integer currentPage, Integer year) {
         PageAdapter<BlogDescriptionDto> dtoPageAdapter = blogWrapper.findPage(currentPage, year);
-        log.info("0 -- {}", dtoPageAdapter.toString());
         List<BlogDescriptionDto> descList = dtoPageAdapter.getContent();
         List<BlogDescriptionDto> descSensitiveList = new ArrayList<>();
 
@@ -92,7 +89,6 @@ public class BlogServiceImpl implements BlogService {
             Long blogId = desc.getId();
             if (!StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
                 descSensitiveList.add(desc);
-                log.info("1 -- {}", descSensitiveList.toString());
                 continue;
             }
 
@@ -100,18 +96,15 @@ public class BlogServiceImpl implements BlogService {
             List<String> words = sensitiveContentDto.getSensitiveContent();
             if (words.isEmpty()) {
                 descSensitiveList.add(desc);
-                log.info("2 -- {}", descSensitiveList.toString());
             } else {
                 String title = SensitiveUtils.deal(words, desc.getTitle());
                 String description = SensitiveUtils.deal(words, desc.getDescription());
                 BlogDescriptionDto sensitiveDesc = BlogDescriptionDtoConvertor.convert(desc, title, description);
                 descSensitiveList.add(sensitiveDesc);
-                log.info("3 -- {}", descSensitiveList.toString());
             }
         }
 
         dtoPageAdapter.setContent(descSensitiveList);
-        log.info("4 -- {}", dtoPageAdapter.toString());
         return BlogDescriptionVoConvertor.convert(dtoPageAdapter);
     }
 
