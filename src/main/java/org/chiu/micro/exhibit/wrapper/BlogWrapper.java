@@ -1,6 +1,8 @@
 package org.chiu.micro.exhibit.wrapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.chiu.micro.exhibit.convertor.BlogDescriptionDtoConvertor;
 import org.chiu.micro.exhibit.convertor.BlogExhibitDtoConvertor;
 import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
@@ -25,6 +27,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BlogWrapper {
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
@@ -65,6 +68,7 @@ public class BlogWrapper {
                         LocalDateTime.of(year, 1, 1, 0, 0, 0),
                         LocalDateTime.of(year, 12, 31, 23, 59, 59));
 
+        log.info("raw -- {}", page.toString());
         return BlogDescriptionDtoConvertor.convert(page);
     }
 
