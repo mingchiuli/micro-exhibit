@@ -7,10 +7,10 @@ public class BlogExhibitVoConvertor {
 
     private BlogExhibitVoConvertor() {}
 
-    public static BlogExhibitVo convert(BlogExhibitDto dto, String newContent) {
+    public static BlogExhibitVo convert(BlogExhibitDto dto, String newContent, String newtitle, String newDescription) {
         return BlogExhibitVo.builder()
-                .title(dto.getTitle())
-                .description(dto.getDescription())
+                .title(newtitle)
+                .description(newDescription)
                 .content(newContent)
                 .readCount(dto.getReadCount())
                 .nickname(dto.getNickname())

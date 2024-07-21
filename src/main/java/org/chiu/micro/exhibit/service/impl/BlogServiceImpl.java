@@ -222,8 +222,10 @@ public class BlogServiceImpl implements BlogService {
             }
 
             String content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
+            String title = SensitiveUtils.deal(words, blogExhibitDto.getTitle());
+            String description = SensitiveUtils.deal(words, blogExhibitDto.getDescription());
             blogWrapper.setReadCount(id);
-            return BlogExhibitVoConvertor.convert(blogExhibitDto, content);
+            return BlogExhibitVoConvertor.convert(blogExhibitDto, content, title, description);
         }
 
         throw new MissException(AUTH_EXCEPTION.getMsg());
