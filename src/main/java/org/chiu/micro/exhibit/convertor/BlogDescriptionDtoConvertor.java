@@ -44,6 +44,7 @@ public class BlogDescriptionDtoConvertor {
         return BlogDescriptionDto.builder()
                 .id(content.getId())
                 .status(content.getStatus())
+                .link(content.getLink())
                 .created(content.getCreated())
                 .title(title)
                 .description(description)
