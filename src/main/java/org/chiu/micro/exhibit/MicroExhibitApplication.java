@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class MicroExhibitApplication {
 
 	public static void main(String[] args) {
+			TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 			SpringApplication.run(MicroExhibitApplication.class, args);
 	}
 
