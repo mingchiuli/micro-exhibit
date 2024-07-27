@@ -40,14 +40,14 @@ public class BlogDescriptionDtoConvertor {
                 .build();
     }
 
-    public static BlogDescriptionDto convert(BlogDescriptionDto content, String title, String description) {
+    public static BlogDescriptionDto convert(BlogDescriptionDto content) {
         return BlogDescriptionDto.builder()
                 .id(content.getId())
                 .status(content.getStatus())
                 .link(content.getLink())
                 .created(content.getCreated())
-                .title(title)
-                .description(description)
+                .title(content.getTitle())
+                .description(content.getDescription())
                 .build();
     }
 

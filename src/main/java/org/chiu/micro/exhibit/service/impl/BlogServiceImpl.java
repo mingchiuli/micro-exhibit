@@ -1,6 +1,5 @@
 package org.chiu.micro.exhibit.service.impl;
 
-import org.chiu.micro.exhibit.convertor.BlogDescriptionDtoConvertor;
 import org.chiu.micro.exhibit.convertor.BlogDescriptionVoConvertor;
 import org.chiu.micro.exhibit.convertor.BlogExhibitVoConvertor;
 import org.chiu.micro.exhibit.convertor.BlogHotReadVoConvertor;
@@ -9,6 +8,7 @@ import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
 import org.chiu.micro.exhibit.dto.BlogEntityDto;
 import org.chiu.micro.exhibit.dto.BlogExhibitDto;
 import org.chiu.micro.exhibit.dto.BlogSensitiveContentDto;
+import org.chiu.micro.exhibit.dto.SensitiveContent;
 import org.chiu.micro.exhibit.vo.BlogDescriptionVo;
 import org.chiu.micro.exhibit.vo.BlogExhibitVo;
 import org.chiu.micro.exhibit.vo.BlogHotReadVo;
@@ -93,14 +93,12 @@ public class BlogServiceImpl implements BlogService {
             }
 
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(blogId);
-            List<String> words = sensitiveContentDto.getSensitiveContent();
+            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContentList();
             if (words.isEmpty()) {
                 descSensitiveList.add(desc);
             } else {
-                String title = SensitiveUtils.deal(words, desc.getTitle());
-                String description = SensitiveUtils.deal(words, desc.getDescription());
-                BlogDescriptionDto sensitiveDesc = BlogDescriptionDtoConvertor.convert(desc, title, description);
-                descSensitiveList.add(sensitiveDesc);
+                BlogDescriptionDto blogDescriptionDto = SensitiveUtils.deal(words, desc);
+                descSensitiveList.add(blogDescriptionDto);
             }
         }
 
@@ -215,17 +213,15 @@ public class BlogServiceImpl implements BlogService {
 
         if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(id);
-            List<String> words = sensitiveContentDto.getSensitiveContent();
+            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContentList();
             if (words.isEmpty()) {
                 blogWrapper.setReadCount(id);
                 return BlogExhibitVoConvertor.convert(blogExhibitDto);
             }
 
-            String content = SensitiveUtils.deal(words, blogExhibitDto.getContent());
-            String title = SensitiveUtils.deal(words, blogExhibitDto.getTitle());
-            String description = SensitiveUtils.deal(words, blogExhibitDto.getDescription());
+            BlogExhibitDto content = SensitiveUtils.deal(words, blogExhibitDto);
             blogWrapper.setReadCount(id);
-            return BlogExhibitVoConvertor.convert(blogExhibitDto, content, title, description);
+            return BlogExhibitVoConvertor.convert(content);
         }
 
         throw new MissException(AUTH_EXCEPTION.getMsg());

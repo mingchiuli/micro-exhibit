@@ -12,6 +12,6 @@ public class BlogSensitiveContentDto implements Serializable {
 
     private Long blogId;
 
-    private List<String> sensitiveContent;
+    private List<SensitiveContent> sensitiveContentList;
 
 }

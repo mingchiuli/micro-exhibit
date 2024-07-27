@@ -1,26 +1,95 @@
 package org.chiu.micro.exhibit.utils;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class SensitiveUtils {
-  
-    private SensitiveUtils() {}
+import org.chiu.micro.exhibit.convertor.BlogExhibitDtoConvertor;
+import org.chiu.micro.exhibit.dto.BlogDescriptionDto;
+import org.chiu.micro.exhibit.dto.BlogExhibitDto;
+import org.chiu.micro.exhibit.dto.SensitiveContent;
+import org.chiu.micro.exhibit.lang.SensitiveTypeEnum;
 
-    public static String deal(List<String> sensitiveWords, String rawContent) {
-        List<String> words = sensitiveWords.stream()
-                .sorted(Comparator.comparingInt(String::length).reversed())
+public class SensitiveUtils {
+
+    private SensitiveUtils() {
+    }
+
+    public static BlogExhibitDto deal(List<SensitiveContent> sensitiveWords, BlogExhibitDto blog) {
+        List<SensitiveContent> titleSensitiveList = sensitiveWords.stream()
+                .filter(item -> SensitiveTypeEnum.TITLE.getCode().equals(item.getType()))
                 .toList();
 
-        for (String str : words) {
-            rawContent = rawContent.replaceAll(str, getStar(str));
+        List<SensitiveContent> descSensitiveList = sensitiveWords.stream()
+                .filter(item -> SensitiveTypeEnum.DESCRIPTION.getCode().equals(item.getType()))
+                .toList();
+
+        List<SensitiveContent> contentSensitiveList = sensitiveWords.stream()
+                .filter(item -> SensitiveTypeEnum.CONTENT.getCode().equals(item.getType()))
+                .toList();
+
+        String title = blog.getTitle();
+        String description = blog.getDescription();
+        String content = blog.getContent();
+
+        for (SensitiveContent item : titleSensitiveList) {
+            Integer index = item.getStartIndex();
+            String sensitiveContent = item.getContent();
+            title = title.substring(0, index) +
+                    getStar(sensitiveContent) +
+                    title.substring(index + sensitiveContent.length());
         }
-        return rawContent;
+
+        for (SensitiveContent item : descSensitiveList) {
+            Integer index = item.getStartIndex();
+            String sensitiveContent = item.getContent();
+            description = description.substring(0, index) +
+                    getStar(sensitiveContent) +
+                    description.substring(index + sensitiveContent.length());
+        }
+
+        for (SensitiveContent item : contentSensitiveList) {
+            Integer index = item.getStartIndex();
+            String sensitiveContent = item.getContent();
+            content = content.substring(0, index) +
+                    getStar(sensitiveContent) +
+                    content.substring(index + sensitiveContent.length());
+        }
+
+        return BlogExhibitDtoConvertor.convert(blog, title, description, content);
+    }
+
+    public static BlogDescriptionDto deal(List<SensitiveContent> sensitiveWords, BlogDescriptionDto blog) {
+        List<SensitiveContent> titleSensitiveList = sensitiveWords.stream()
+                .filter(item -> SensitiveTypeEnum.TITLE.getCode().equals(item.getType()))
+                .toList();
+
+        List<SensitiveContent> descSensitiveList = sensitiveWords.stream()
+                .filter(item -> SensitiveTypeEnum.DESCRIPTION.getCode().equals(item.getType()))
+                .toList();
+
+        String title = blog.getTitle();
+        String description = blog.getDescription();
+
+        for (SensitiveContent item : titleSensitiveList) {
+            Integer index = item.getStartIndex();
+            String sensitiveContent = item.getContent();
+            title = title.substring(0, index) +
+                    getStar(sensitiveContent) +
+                    title.substring(index + sensitiveContent.length());
+        }
+
+        for (SensitiveContent item : descSensitiveList) {
+            Integer index = item.getStartIndex();
+            String sensitiveContent = item.getContent();
+            description = description.substring(0, index) +
+                    getStar(sensitiveContent) +
+                    description.substring(index + sensitiveContent.length());
+        }
+
+        return BlogExhibitDtoConvertor.convert(blog, title, description);
+
     }
 
     private static String getStar(String item) {
-        return "[" +
-                "+".repeat(item.length()) +
-                "]";
+        return "+".repeat(item.length());
     }
 }
