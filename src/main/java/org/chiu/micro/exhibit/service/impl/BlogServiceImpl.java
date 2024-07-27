@@ -93,7 +93,7 @@ public class BlogServiceImpl implements BlogService {
             }
 
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(blogId);
-            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContentList();
+            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContent();
             if (words.isEmpty()) {
                 descSensitiveList.add(desc);
             } else {
@@ -213,7 +213,7 @@ public class BlogServiceImpl implements BlogService {
 
         if (StatusEnum.SENSITIVE_FILTER.getCode().equals(status)) {
             BlogSensitiveContentDto sensitiveContentDto = blogSensitiveWrapper.findSensitiveByBlogId(id);
-            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContentList();
+            List<SensitiveContent> words = sensitiveContentDto.getSensitiveContent();
             if (words.isEmpty()) {
                 blogWrapper.setReadCount(id);
                 return BlogExhibitVoConvertor.convert(blogExhibitDto);
