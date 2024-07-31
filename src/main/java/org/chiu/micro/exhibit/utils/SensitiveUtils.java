@@ -31,27 +31,27 @@ public class SensitiveUtils {
         String content = blog.getContent();
 
         for (SensitiveContent item : titleSensitiveList) {
-            Integer index = item.getStartIndex();
-            String sensitiveContent = item.getContent();
-            title = title.substring(0, index) +
-                    getStar(sensitiveContent) +
-                    title.substring(index + sensitiveContent.length());
+            Integer startIndex = item.getStartIndex();
+            Integer endIndex = item.getEndIndex();
+            title = title.substring(0, startIndex) +
+                    getStar(endIndex - startIndex) +
+                    title.substring(endIndex);
         }
 
         for (SensitiveContent item : descSensitiveList) {
-            Integer index = item.getStartIndex();
-            String sensitiveContent = item.getContent();
-            description = description.substring(0, index) +
-                    getStar(sensitiveContent) +
-                    description.substring(index + sensitiveContent.length());
+            Integer startIndex = item.getStartIndex();
+            Integer endIndex = item.getEndIndex();
+            description = description.substring(0, startIndex) +
+                    getStar(endIndex - startIndex) +
+                    description.substring(endIndex);
         }
 
         for (SensitiveContent item : contentSensitiveList) {
-            Integer index = item.getStartIndex();
-            String sensitiveContent = item.getContent();
-            content = content.substring(0, index) +
-                    getStar(sensitiveContent) +
-                    content.substring(index + sensitiveContent.length());
+            Integer startIndex = item.getStartIndex();
+            Integer endIndex = item.getEndIndex();
+            content = content.substring(0, startIndex) +
+                    getStar(endIndex - startIndex) +
+                    content.substring(endIndex);
         }
 
         return BlogExhibitDtoConvertor.convert(blog, title, description, content);
@@ -70,26 +70,26 @@ public class SensitiveUtils {
         String description = blog.getDescription();
 
         for (SensitiveContent item : titleSensitiveList) {
-            Integer index = item.getStartIndex();
-            String sensitiveContent = item.getContent();
-            title = title.substring(0, index) +
-                    getStar(sensitiveContent) +
-                    title.substring(index + sensitiveContent.length());
+            Integer startIndex = item.getStartIndex();
+            Integer endIndex = item.getEndIndex();
+            title = title.substring(0, startIndex) +
+                    getStar(endIndex - startIndex) +
+                    title.substring(endIndex);
         }
 
         for (SensitiveContent item : descSensitiveList) {
-            Integer index = item.getStartIndex();
-            String sensitiveContent = item.getContent();
-            description = description.substring(0, index) +
-                    getStar(sensitiveContent) +
-                    description.substring(index + sensitiveContent.length());
+            Integer startIndex = item.getStartIndex();
+            Integer endIndex = item.getEndIndex();
+            description = description.substring(0, startIndex) +
+                    getStar(endIndex - startIndex) +
+                    description.substring(endIndex);
         }
 
         return BlogExhibitDtoConvertor.convert(blog, title, description);
 
     }
 
-    private static String getStar(String item) {
-        return "+".repeat(item.length());
+    private static String getStar(Integer length) {
+        return "+".repeat(length);
     }
 }
