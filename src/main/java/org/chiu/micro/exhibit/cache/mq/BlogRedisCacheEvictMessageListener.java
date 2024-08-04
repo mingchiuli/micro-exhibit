@@ -4,7 +4,6 @@ import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
 import org.chiu.micro.exhibit.cache.handler.BlogCacheEvictHandler;
 import org.chiu.micro.exhibit.constant.BlogOperateMessage;
-import org.chiu.micro.exhibit.config.EvictCacheRabbitConfig;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,9 @@ public class BlogRedisCacheEvictMessageListener {
 
     private final List<BlogCacheEvictHandler> blogCacheEvictHandlers;
 
-    @RabbitListener(queues = EvictCacheRabbitConfig.CACHE_BLOG_EVICT_QUEUE,
+    public static final String CACHE_QUEUE = "blog.change.queue.cache";
+
+    @RabbitListener(queues = CACHE_QUEUE,
                     concurrency = "10",
                     messageConverter = "jsonMessageConverter",
                     executor = "mqExecutor")
